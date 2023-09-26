@@ -3,6 +3,7 @@ class PrototypesController < ApplicationController
   before_action :move_to_index, except: [:index, :show]
 
   def index
+    @prototypes = Prototype.all
   end
 
   def new
@@ -10,13 +11,14 @@ class PrototypesController < ApplicationController
   end
 
   def create
-    # prototype.create(prototype_params) #{ストロングﾊﾟﾗﾒｰﾀｰ作成メソッドの名前が引数}
     # 保存できた場合とできなかった場合での分岐処理
-    #if @prototype.save
-      #redirect_to room_messages_path(@room)
-      #else
-     #render :index, status: :unprocessable_entity
-    #end
+    @prototype = Prototype.new(prototype_params)
+
+    if @prototype.save
+      redirect_to root_path(@prototype)
+    else
+     render :index, status: :unprocessable_entity
+    end
   end
   
   def destroy
@@ -32,7 +34,7 @@ class PrototypesController < ApplicationController
   end
   
   def show
-    # @user = User.find(params[:id]) ←一回非表示
+    @prototype = Prototype.find(params[:id]) 
   end
   
   private
@@ -46,7 +48,7 @@ class PrototypesController < ApplicationController
   # end
   
   def prototype_params
-    params.require(:prototype).permit(:name, :image).merge(user_id: current_user.id)
+    params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
   end
   
   def move_to_index
@@ -54,7 +56,5 @@ class PrototypesController < ApplicationController
       redirect_to action: :index
     end
   end
-  
 end
-
 
