@@ -17,22 +17,12 @@ class PrototypesController < ApplicationController
     if @prototype.save
       redirect_to root_path(@prototype.id)
     else
-     render :index, status: :unprocessable_entity
+     render :new, status: :unprocessable_entity
     end
   end
   
   def destroy
     prototype = Prototype.find(params[:id]) 
-    prototype.destroy
-    redirect_to root_path
-  end
-  
-  def edit
-    
-  end
-  
-  def update
-    prototype = Prototype.find(params[:id])     
     prototype.destroy
     redirect_to root_path
   end
@@ -47,7 +37,7 @@ class PrototypesController < ApplicationController
   def update
     prototype = Prototype.find(params[:id])     
     if prototype.update(prototype_params)
-      redirect_to root_path(prototype.id)
+      redirect_to prototype_path(prototype.id)
     else
      render :edit, status: :unprocessable_entity
     end
