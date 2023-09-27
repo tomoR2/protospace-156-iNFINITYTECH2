@@ -22,7 +22,9 @@ class PrototypesController < ApplicationController
   end
   
   def destroy
-  
+    prototype = Prototype.find(params[:id]) 
+    prototype.destroy
+    redirect_to root_path
   end
   
   def edit
@@ -53,20 +55,18 @@ class PrototypesController < ApplicationController
   
   def show
     @prototype = Prototype.find(params[:id]) 
+    @comment = Comment.new
+    @comments = @prototype.comments.includes(:user)
   end
   
   private
-  # ＜ピックツイートのコントローラー記述をコピペしました、適宜変更していきましょう＞
-  # def tweet_params
-  #   params.require(:tweet).permit( :image, :text).merge(user_id: current_user.id)
-  # end
-  
-  # def set_tweet
-  #   @tweet = Tweet.find(params[:id])
-  # end
   
   def prototype_params
     params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
+  end
+
+  def comment_params
+    params.require(:comment).permit(:content).merge(user_id: current_user.id , prototype_id:@prototype.id)
   end
   
   def move_to_index
