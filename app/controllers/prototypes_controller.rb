@@ -17,22 +17,12 @@ class PrototypesController < ApplicationController
     if @prototype.save
       redirect_to root_path(@prototype.id)
     else
-     render :index, status: :unprocessable_entity
+     render :new, status: :unprocessable_entity
     end
   end
   
   def destroy
   
-  end
-  
-  def edit
-    
-  end
-  
-  def update
-    prototype = Prototype.find(params[:id])     
-    prototype.destroy
-    redirect_to root_path
   end
   
   def edit
@@ -45,7 +35,7 @@ class PrototypesController < ApplicationController
   def update
     prototype = Prototype.find(params[:id])     
     if prototype.update(prototype_params)
-      redirect_to root_path(prototype.id)
+      redirect_to prototype_path(prototype.id)
     else
      render :edit, status: :unprocessable_entity
     end
@@ -56,14 +46,7 @@ class PrototypesController < ApplicationController
   end
   
   private
-  # ＜ピックツイートのコントローラー記述をコピペしました、適宜変更していきましょう＞
-  # def tweet_params
-  #   params.require(:tweet).permit( :image, :text).merge(user_id: current_user.id)
-  # end
-  
-  # def set_tweet
-  #   @tweet = Tweet.find(params[:id])
-  # end
+
   
   def prototype_params
     params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
